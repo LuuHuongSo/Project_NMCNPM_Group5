@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>MENU</title>
+        <link rel="stylesheet" href="./assets/css/menu.css">
+    </head>
+    <body>
+        <!-- Header -->
+        <div class="header">
+            <div class="logo"></div>
+            <div class="nav">
+                <a href="#" id="roleDisplay" style="display: none;">Manager</a>
+                <a href="login.html" class="login-btn">Login</a>
+                <a href="#" id="search-icon">🔍</a>
+                <a href="#" id="menu-icon" onclick="toggleSidebar()">☰</a>
+            </div>
+        </div>
+
+        <!-- Menu -->
+        <div class="menu">
+            <h2>Menu</h2>
+            <div class="search-bar">
+                <input type="text" placeholder="Tìm kiếm sản phẩm..." id="search">
+                <button>Tìm kiếm</button>
+            </div>
+            <div class="menu-tabs">
+                <button class="menu-tab active" data-category="all">Tất cả</button>
+                <button class="menu-tab" data-category="COMBO">Combo</button>
+                <button class="menu-tab" data-category="FOOD">Món ăn</button>
+                <button class="menu-tab" data-category="DRINK">Đồ uống</button>
+            </div>
+            <div class="menu-items">
+                <!-- Các món ăn sẽ được thêm vào đây -->
+                <div class="menu-item" style="background-image: url();">
+                    <p>Tên món ăn</p>
+                </div>
+                <!-- Thêm các món ăn tương tự vào đây -->
+            </div>
+        </div>
+        <script type="text/javascript">
+            const menuApi = 'http://localhost:3000/foods';
+
+            function start() {
+                getMenu('all', function(filteredItems) {
+                    renderMenu(filteredItems);
+                    setUpTap();
+                });
+            }
+
+            start();
+
+            function getMenu(filterCategory,callback) {
+                fetch(menuApi)
+                    .then(function(response) {
+                        return response.json();
+                    })
+                    .then(menuItems => {
+                        const filteredItems = menuItems.filter(menuItem => {
+                            filterCategory === 'all' || menuItem.category === filterCategory;
+                        });
+                        callback(filteredItems);
+                    })
+                    .catch(error => {
+                        console.log('có lỗi khi nhận giữ liệu', error);
+                    });
+            }
+
+            function renderMenu(menuItems) {
+                const menuBlock = document.querySelector('.menu-items');
+
+                var htmls = menuItems.map(function(menuItem) {
+                    return `<div class="menu-item">
+                        <img src="${menuItem.image}" alt="${menuItem.name}">
+                        <p>${menuItem.name}</p>
+                        <p>Giá tiền: ${menuItem.price}</p>
+                      </div>`
+                });
+                menuBlock.innerHTML = htmls.join('');
+            }
+
+            function setUpTap() {
+                const tabs = document.querySelectorAll('.menu-tab');
+
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', function () {
+                        tabs.forEach(tab => tab.classList.remove('active'));
+                        this.classList.add('active');
+
+                        const selectedCategory = this.dataset.category;
+
+                        getMenu(selectedCategory, function(filteredItems) {
+                        renderMenu(filteredItems);
+                        });
+                    });
+                });
+            }
+        </script>
+    </body>
+</html>

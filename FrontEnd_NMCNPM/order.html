@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Page</title>
+    <link rel="stylesheet" href="/assets/css/orderstyle.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo"></div>
+        <div class="nav">
+            <a href="login.html" class="login-btn">Login</a>
+            <a href="#" id="menu-icon" onclick="toggleSidebar()">☰</a>
+        </div>
+    </div>
+
+    <div id="sidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="toggleSidebar()">&times;</a>
+        <a href="index.html">Home</a>
+        <a href="#">Menu</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+    </div>
+    <div class="page-content">
+        <div id="customerActions" style="display: none;">
+            <div class="customer-order-container">
+                <!-- List Order Section -->
+                <div class="customer-list-order">
+                    <h2>Your Order</h2>
+                    <div class="customer-choose-table">
+                        <h3>Chọn Bàn</h3>
+                        <div class="customer-table-grid">
+                            <!-- theem ban -->
+                        </div>
+                    </div>
+                    
+                    <ul id="order-list">
+                        <!-- Các món ăn đã chọn sẽ được thêm vào đây -->
+                    </ul>
+                    <button class="send-order">Gửi Order</button>
+                </div>
+        
+                <!-- Menu Section -->
+                <div class="customer-menu-section">
+                    <h2>Menu</h2>
+                    <div class="customer-search-bar">
+                        <input type="text" placeholder="Tìm kiếm sản phẩm..." id="search">
+                        <button>Tìm kiếm</button>
+                    </div>
+                    <div class="customer-menu-tabs">
+                        <button class="customer-menu-tab active" data-category="all">Tất cả</button>
+                        <button class="customer-menu-tab" data-category="COMBO">Combo</button>
+                        <button class="customer-menu-tab" data-category="FOOD">Món ăn</button>
+                        <button class="customer-menu-tab" data-category="DRINK">Đồ uống</button>
+                    </div>
+                    <div class="customer-menu-items">
+                        <!-- Các món ăn sẽ được thêm vào đây -->
+                        <div class="customer-menu-item">
+                            <p>Tên món ăn</p>
+                            <button class="add-to-order">Chọn</button>
+                        </div>
+                        <!-- Thêm các món ăn tương tự vào đây -->
+                    </div>
+                </div>
+            </div>
+            <div id="customer-order-button">
+                <button id="customer-show-orders">🛒</button>
+            </div>
+            
+            <!-- Modal hiển thị đơn đặt hàng -->
+            <div id="customer-order-modal" class="hidden">
+                <div class="customer-modal-content">
+                <h2>Đơn đặt bàn của bạn</h2>
+                <ul id="customer-order-list-modal">
+                    <!-- Đơn đặt hàng sẽ được render ở đây -->
+                </ul>
+                <button id="customer-close-modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+        <div id="managerActions" style="display: none;">
+            <div class="manager-order-container">
+                <!-- List Order Section -->
+                <div class="manager-list-order">
+                    <h2>Full table Order</h2>
+                    <div class="manager-choose-table">
+                        <h3>Chọn Bàn</h3>
+                        <div class="manager-table-grid">
+                            <!--them ban-->
+                        </div>
+                    </div>
+                    <div id="order-details">
+                        <!-- Nội dung chi tiết đơn hàng sẽ được thêm vào đây -->
+                    </div>
+                </div>
+        
+                <!-- Menu Section -->
+                <div class="manager-menu-section">
+                    <h2>Menu</h2>
+                    <div class="manager-search-bar">
+                        <input type="text" placeholder="Tìm kiếm sản phẩm..." id="manager-search">
+                        <button>Tìm kiếm</button>
+                    </div>
+                    <div class="manager-menu-tabs">
+                        <button class="manager-menu-tab active" data-category="all">Tất cả</button>
+                        <button class="manager-menu-tab" data-category="COMBO">Combo</button>
+                        <button class="manager-menu-tab" data-category="FOOD">Món ăn</button>
+                        <button class="manager-menu-tab" data-category="DRINK">Đồ uống</button>
+                    </div>
+                    <div class="manager-menu-items">
+                        <!-- Các món ăn sẽ được thêm vào đây -->
+                        <div class="manager-menu-item">
+                            <p>Tên món ăn</p>
+                        </div>
+                        <!-- Thêm các món ăn tương tự vào đây -->
+                    </div>
+                </div>
+            </div>
+            <!-- <div id="order-details">
+                Nội dung chi tiết đơn hàng sẽ được thêm vào đây
+            </div> -->
+            
+        
+            <button class="add-item-btn" onclick="toggleAddItem()">+</button>
+        
+            <div class="add-item-container" id="add-item-container">
+                <h3>Thêm sản phẩm</h3>
+                <input type="text" id="item-name" placeholder="Tên sản phẩm" required>
+                <input type="number" id="item-price" placeholder="Giá" required>
+                <input type="text" id="item-description" placeholder="Mô tả" required>
+                <input type="file" id="menu-image" name="image" accept="image/*" required>
+                <label for="category">Loại sản phẩm:</label>
+                <select id="category" required>
+                    <option value="" disabled selected>Chọn loại sản phẩm</option>
+                    <option value="COMBO">Combo</option>
+                    <option value="FOOD">Món ăn</option>
+                    <option value="DRINK">Đồ uống</option>
+                </select>
+                <button id="createBtn">Thêm</button>
+            </div>
+            <button class="sub-item-btn" onclick="toggleSubItem()">-</button>
+        
+            <div class="sub-item-container" id="sub-item-container">
+                <h3>Xóa sản phẩm</h3>
+                <input type="number" id="product-id" placeholder="Nhập id sản phẩm" repuired>
+                <button id="deleteBtn">Xóa</button>
+            </div>
+        
+            <div id="manager-order-button">
+                <button id="manager-show-orders">🛒</button>
+            </div>
+            
+            <!-- Modal hiển thị đơn đặt hàng -->
+            <div id="manager-order-modal" class="hidden">
+                <div class="manager-modal-content">
+                <h2>Tất cả đơn đặt Bàn</h2>
+                <ul id="manager-order-list-modal">
+                    <!-- Đơn đặt hàng sẽ được render ở đây -->
+                </ul>
+                <button id="manager-close-modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/assets/script/orderscript.js"></script>
+</body>
+</html>

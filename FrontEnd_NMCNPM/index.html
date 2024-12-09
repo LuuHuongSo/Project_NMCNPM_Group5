@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNPM</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo"></div>
+        <div class="nav">
+            <a href="#" class="roleDisplay" id="roleDisplay">
+                <i class="fas fa-user-tie"></i> Manager
+              </a>
+              
+            <a href="login.html" class="login-btn">Login</a>
+            <a href="#" id="menu-icon" onclick="toggleSidebar()">☰</a>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="toggleSidebar()">&times;</a>
+        <a href="#">Home</a>
+        <a href="menu.html">Menu</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <a href="order.html">Order</a>
+    </div>
+
+    <!-- Hero Section -->
+    <div>
+    <section class="hero">
+        <h1>Group 5 Restaurant</h1>
+        <p>Nhập môn công nghệ phần mềm 2024.1</p>
+        <div class="search-box">
+            <input type="text" placeholder="Restaurant Name">
+            <input type="text" placeholder="All Locations">
+            <button>SEARCH</button>
+        </div>
+    </section>
+    </div>
+
+    <!-- Food Gallery -->
+    <div class="slider-container">
+        <div class="slider">
+            <div class="slider-item" style="background-image: url(./assets/image/FOOD/pexels-ash-craig-122861-376464.jpg)">
+                <div class="content">
+                    <div class="name">Bánh xếp</div>
+                    <div class="des">Món ăn hot trong tháng</div>
+                    <button>See more</button>
+                </div>
+            </div>
+            <div class="slider-item" style="background-image: url(./assets/image/FOOD/pexels-catscoming-699544.jpg)">
+                <div class="content">
+                    <div class="name">Hamburger</div>
+                    <div class="des">Món ăn hot trong tháng</div>
+                    <button>See more</button>
+                </div>
+            </div>
+            <div class="slider-item" style="background-image: url(./assets/image/FOOD/pexels-chanwalrus-958546.jpg)">
+                <div class="content">
+                    <div class="name">Gà rán</div>
+                    <div class="des">Món ăn hot trong tháng</div>
+                    <button>See more</button>
+                </div>
+            </div>
+            <div class="slider-item" style="background-image: url(./assets/image/FOOD/pexels-rajesh-tp-749235-1603901.jpg)">
+                <div class="content">
+                    <div class="name">Tôm chiên</div>
+                    <div class="des">Món ăn hot trong tháng</div>
+                    <button>See more</button>
+                </div>
+            </div>
+            <div class="slider-item" style="background-image: url(./assets/image/FOOD/pexels-robinstickel-70497.jpg)">
+                <div class="content">
+                    <div class="name">Thị bò</div>
+                    <div class="des">Món ăn hot trong tháng</div>
+                    <button>See more</button>
+                </div>
+            </div>
+            <div class="slider-item" style="background-image: url(./assets/image/FOOD/pexels-vanmalidate-769289.jpg)">
+                <div class="content">
+                    <div class="name">Bánh mì</div>
+                    <div class="des">Món ăn hot trong tháng</div>
+                    <button>See more</button>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="slider-button">
+            <button class="prev"><i class="fa-solid fa-arrow-left"></i></button>
+            <button class="next"><i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+    </div>
+
+    <!-- Best Popular Recipes Section -->
+     <div>
+        <section class="popular-recipes">
+            <h2>Our Best Popular Recipes</h2>
+            <div class="recipe-gallery">
+                <div class="recipe-item">
+                    <img src="https://images.pexels.com/photos/842571/pexels-photo-842571.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Breakfast">
+                    <h3>Breakfast</h3>
+                    <button class="recipe-btn">→</button>
+                </div>
+                <div class="recipe-item">
+                    <img src="https://images.pexels.com/photos/1199957/pexels-photo-1199957.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Lunch">
+                    <h3>Lunch</h3>
+                    <button class="recipe-btn">→</button>
+                </div>
+                <div class="recipe-item">
+                    <img src="https://images.pexels.com/photos/323682/pexels-photo-323682.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Dinner">
+                    <h3>Dinner</h3>
+                    <button class="recipe-btn">→</button>
+                </div>
+            </div>
+            <button class="order-now">
+                <a href="order.html">Order Now</a>
+            </button>
+        </section>
+     </div>
+
+     <!-- Footer -->
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-section about">
+            <h2>About Us</h2>
+            <p>
+                Welcome to Group 5 Restaurant! We specialize in offering the best cuisines and an unforgettable dining experience. 
+            </p>
+            <div class="social-links">
+                <a href="#"><img src="https://img.icons8.com/ios-filled/50/000000/facebook-new.png" alt="Facebook"></a>
+                <a href="#"><img src="https://img.icons8.com/ios-filled/50/000000/twitter.png" alt="Twitter"></a>
+                <a href="#"><img src="https://img.icons8.com/ios-filled/50/000000/linkedin.png" alt="LinkedIn"></a>
+                <a href="#"><img src="https://img.icons8.com/ios-filled/50/000000/instagram-new.png" alt="Instagram"></a>
+            </div>
+        </div>
+        <div class="footer-section links">
+            <h2>Quick Links</h2>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Menu</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+        <div class="footer-section contact">
+            <h2>Contact Us</h2>
+            <ul>
+                <li><img src="https://img.icons8.com/ios-glyphs/30/000000/phone.png" alt="Phone"> +1-234-567-890</li>
+                <li><img src="https://img.icons8.com/ios-glyphs/30/000000/new-post.png" alt="Email"> info@group5restaurant.com</li>
+                <li><img src="https://img.icons8.com/ios-glyphs/30/000000/address.png" alt="Address"> Hanoi university of science and technology</li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2024 Group 5 Restaurant. All rights reserved.</p>
+    </div>
+</footer>
+
+
+    <script src="/assets/script/script.js"></script>
+    <script type="text/javascript">
+        let next = document.querySelector('.next')
+        let prev = document.querySelector('.prev')
+
+        next.addEventListener('click', function(){
+            let items = document.querySelectorAll('.slider-item')
+            document.querySelector('.slider').appendChild(items[0])
+        })
+
+        prev.addEventListener('click', function(){
+            let items = document.querySelectorAll('.slider-item')
+            document.querySelector('.slider').prepend(items[items.length - 1]) // here the length of items = 6
+        })
+    </script>
+</body>
+</html>

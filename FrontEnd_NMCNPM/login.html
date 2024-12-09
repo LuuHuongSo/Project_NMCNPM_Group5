@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="/assets/css/csslogin.css">
+</head>
+<body>
+    <div class="login-container">
+        <h2>Welcome to the Restaurant</h2>
+        <p>Please select your login mode:</p>
+        
+        <div class="login-options">
+            <button id="customerBtn">Customer</button>
+            <button id="ownerBtn">Restaurant Owner</button>
+        </div>
+        
+        <div class="customer-login">
+            <button class="confirm-btn">Continue as Customer</button>
+        </div>
+
+        <div class="owner-login">
+            <form id="ownerLoginForm">
+                <h3>Restaurant Owner Login</h3>
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="assets/script/script.js"></script>
+</body>
+</html>
