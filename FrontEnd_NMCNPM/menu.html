@@ -7,15 +7,22 @@
         <link rel="stylesheet" href="./assets/css/menu.css">
     </head>
     <body>
-        <!-- Header -->
-        <div class="header">
-            <div class="logo"></div>
-            <div class="nav">
-                <a href="#" id="roleDisplay" style="display: none;">Manager</a>
-                <a href="login.html" class="login-btn">Login</a>
-                <a href="#" id="search-icon">🔍</a>
-                <a href="#" id="menu-icon" onclick="toggleSidebar()">☰</a>
-            </div>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo"></div>
+        <div class="nav">
+            <a href="login.html" class="managermode" style="display: none">MANAGER</a>
+            <a href="login.html" class="login-btn">Login</a>
+            <a href="#" id="menu-icon" onclick="toggleSidebar()">☰</a>
+        </div>
+    </div>
+        <div id="sidebar" class="sidebar">
+            <a href="javascript:void(0)" class="closebtn" onclick="toggleSidebar()">&times;</a>
+            <a href="index.html">Home</a>
+            <a href="#">Menu</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+            <a href="order.html">Order</a>
         </div>
 
         <!-- Menu -->
@@ -40,47 +47,79 @@
             </div>
         </div>
         <script type="text/javascript">
-            const menuApi = 'http://localhost:3000/foods';
+
+            function toggleSidebar() {
+                const sidebar = document.getElementById("sidebar");
+                if (sidebar.style.width === "250px") {
+                    sidebar.style.width = "0";
+                } else {
+                    sidebar.style.width = "250px";
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const role = sessionStorage.getItem('role');
+                
+                if (role === 'MANAGER') {
+                    const ManagerMode = document.querySelector('.managermode');
+                    const loginButton = document.querySelector('.login-btn');
+
+                    if (ManagerMode) {
+                        ManagerMode.style.display = 'inline-block'; // Hiển thị MANAGER
+                    }
+                    if (loginButton) {
+                        loginButton.style.display = 'none'; // Ẩn nút Login
+                    }
+                }
+            });
+
+            const menuApi = 'http://localhost:8080/menu';
 
             function start() {
-                getMenu('all', function(filteredItems) {
+                getMenuItem('all', function(filteredItems) { 
                     renderMenu(filteredItems);
-                    setUpTap();
+                    setupTabs(); 
                 });
             }
 
             start();
 
-            function getMenu(filterCategory,callback) {
-                fetch(menuApi)
+            function getMenuItem(filterCategory, callback) {
+                fetch(menuApi) 
                     .then(function(response) {
                         return response.json();
                     })
-                    .then(menuItems => {
-                        const filteredItems = menuItems.filter(menuItem => {
-                            filterCategory === 'all' || menuItem.category === filterCategory;
-                        });
+                    .then(function(menuItems) {
+                        const filteredItems = menuItems.filter(item => 
+                            filterCategory === 'all' || item.category === filterCategory
+                        );
                         callback(filteredItems);
                     })
-                    .catch(error => {
-                        console.log('có lỗi khi nhận giữ liệu', error);
+                    .catch(function(error) {
+                        console.log('Failed to fetch menu items:', error);
                     });
             }
 
             function renderMenu(menuItems) {
-                const menuBlock = document.querySelector('.menu-items');
+                
+                var menuBlock = document.querySelector('.menu-items');
 
                 var htmls = menuItems.map(function(menuItem) {
-                    return `<div class="menu-item">
-                        <img src="${menuItem.image}" alt="${menuItem.name}">
-                        <p>${menuItem.name}</p>
-                        <p>Giá tiền: ${menuItem.price}</p>
-                      </div>`
+                    return `
+                        <div class="menu-item">
+                            <img src="${menuItem.image}" alt="${menuItem.name}" class="menu-item-image" />
+                            <div class="menu-item-info">
+                                <p class="menu-item-name">${menuItem.name}</p>
+                                <p class="menu-item-price">Giá tiền: ${menuItem.price}</p>
+                                <button>Xem chi tiet</button>
+                            </div>
+                        </div>`;
                 });
                 menuBlock.innerHTML = htmls.join('');
             }
+                
 
-            function setUpTap() {
+            function setupTabs() {
                 const tabs = document.querySelectorAll('.menu-tab');
 
                 tabs.forEach(tab => {
@@ -90,12 +129,38 @@
 
                         const selectedCategory = this.dataset.category;
 
-                        getMenu(selectedCategory, function(filteredItems) {
+                        getMenuItem(selectedCategory, function(filteredItems) {
                         renderMenu(filteredItems);
                         });
                     });
                 });
             }
+
+            // Hàm xử lý tìm kiếm theo thời gian thực
+            function handleSearchRealTime() {
+                const searchInput = document.querySelector('#search').value.toLowerCase(); // Lấy giá trị nhập vào và chuyển về chữ thường
+                getMenuItem('all', function(menuItems) { // Lấy toàn bộ danh sách món ăn
+                    const filteredItems = menuItems.filter(item => 
+                        item.name.toLowerCase().includes(searchInput) // Lọc các món ăn có tên chứa từ khóa
+                    );
+                    renderMenu(filteredItems); // Hiển thị kết quả lọc ngay lập tức
+                });
+            }
+
+            // Lắng nghe sự kiện trên ô tìm kiếm
+            function setupRealTimeSearch() {
+                const searchInput = document.querySelector('#search'); // Lấy ô nhập liệu
+
+                // Gắn sự kiện input để xử lý theo thời gian thực
+                searchInput.addEventListener('input', handleSearchRealTime);
+            }
+
+            // Gọi hàm setupRealTimeSearch trong phần khởi tạo
+            document.addEventListener('DOMContentLoaded', () => {
+                setupRealTimeSearch();
+                setupTabs();
+            });
+
         </script>
     </body>
 </html>

@@ -44,6 +44,14 @@ body {
     font-size: 18px;
 }
 
+/* .login-btn.manager {
+    display: none;
+}
+.managermode.manager {
+    display: inline-block;
+    color:#f0f0f0;
+} */
+
 /* Sidebar */
 .sidebar {
     height: 100%;
@@ -51,43 +59,32 @@ body {
     position: fixed;
     top: 0;
     right: 0;
-    background-color: #252525;
+    background-color: #333;
     overflow-x: hidden;
-    transition: 0.3s ease-in-out;
+    transition: 0.3s;
     padding-top: 60px;
     z-index: 1000;
-    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .sidebar a {
-    padding: 10px 20px;
+    padding: 10px 15px;
     text-decoration: none;
-    font-size: 18px;
+    font-size: 20px;
     color: #fff;
     display: block;
-    transition: color 0.3s, background-color 0.3s;
-    border-radius: 5px;
-    margin: 10px 0;
+    transition: 0.3s;
 }
 
 .sidebar a:hover {
-    background-color: #ffc107;
-    color: #333;
+    color: #ffc107;
 }
 
 .sidebar .closebtn {
     position: absolute;
-    top: 15px;
+    top: 20px;
     right: 25px;
-    font-size: 36px;
-    color: #fff;
-    cursor: pointer;
+    font-size: 30px;
 }
-
-.sidebar .closebtn:hover {
-    color: #ffc107;
-}
-
 
 /* Hero Section */
 .hero {

@@ -7,9 +7,11 @@
     <link rel="stylesheet" href="/assets/css/orderstyle.css">
 </head>
 <body>
+    <!-- Header -->
     <div class="header">
         <div class="logo"></div>
         <div class="nav">
+            <a href="login.html" class="managermode" style="display: none">MANAGER</a>
             <a href="login.html" class="login-btn">Login</a>
             <a href="#" id="menu-icon" onclick="toggleSidebar()">☰</a>
         </div>
@@ -18,9 +20,10 @@
     <div id="sidebar" class="sidebar">
         <a href="javascript:void(0)" class="closebtn" onclick="toggleSidebar()">&times;</a>
         <a href="index.html">Home</a>
-        <a href="#">Menu</a>
+        <a href="menu.html">Menu</a>
         <a href="#">About</a>
         <a href="#">Contact</a>
+        <a href="order.html">Order</a>
     </div>
     <div class="page-content">
         <div id="customerActions" style="display: none;">
@@ -34,6 +37,10 @@
                             <!-- theem ban -->
                         </div>
                     </div>
+
+                    <div>
+                        <h3>Danh sách sản phẩm đã chọn</h3>
+                    </div>
                     
                     <ul id="order-list">
                         <!-- Các món ăn đã chọn sẽ được thêm vào đây -->
@@ -45,7 +52,7 @@
                 <div class="customer-menu-section">
                     <h2>Menu</h2>
                     <div class="customer-search-bar">
-                        <input type="text" placeholder="Tìm kiếm sản phẩm..." id="search">
+                        <input type="text" placeholder="Tìm kiếm sản phẩm..." id="customer-search">
                         <button>Tìm kiếm</button>
                     </div>
                     <div class="customer-menu-tabs">
@@ -66,6 +73,9 @@
             </div>
             <div id="customer-order-button">
                 <button id="customer-show-orders">🛒</button>
+            </div>
+            <div id="order-notification">
+                <h3>Đơn hàng của bạn đã được xác nhận, xem tại đây</h3>
             </div>
             
             <!-- Modal hiển thị đơn đặt hàng -->

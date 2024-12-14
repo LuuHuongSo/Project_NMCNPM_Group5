@@ -545,6 +545,28 @@ select:focus {
     background-color: #10085a;
 }
 
+#customer-order-button button.confirmed {
+    background-color: #28a745; /* Màu xanh lá */
+}
+
+#order-notification {
+    display: none;
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px 15px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    z-index: 1000;
+}
+
+#order-notification.visible {
+    display: block;
+}
+
 /* Modal */
 
 #customer-order-modal.hidden {
@@ -557,23 +579,25 @@ select:focus {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
+    background: rgba(0, 0, 0, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
     animation: fadeIn 0.5s ease-in-out;
+    z-index: 1000;
 }
 
 .customer-modal-content {
-    background: linear-gradient(135deg, rgb(255, 195, 67), rgb(255, 230, 150));
-    padding: 20px;
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    padding: 30px;
     border-radius: 15px;
     width: 80%;
-    max-width: 500px;
+    max-width: 600px;
     text-align: center;
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4);
     position: relative;
     overflow: hidden;
+    animation: slideDown 0.6s ease-out;
 }
 
 .customer-modal-content::before {
@@ -584,64 +608,87 @@ select:focus {
     width: 200%;
     height: 200%;
     background: radial-gradient(circle, rgba(255, 255, 255, 0.4), transparent);
-    animation: rotateGlow 10s linear infinite;
+    animation: rotateGlow 15s linear infinite;
     z-index: -1;
 }
 
 .customer-modal-content h2 {
     margin-bottom: 20px;
-    font-family: 'Arial Black', sans-serif;
-    color: #ff5722;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-family: 'Georgia', serif;
+    color: #34495e;
+    font-size: 2em;
+    font-weight: bold;
+    text-transform: uppercase;
+    animation: textPulse 1s infinite;
 }
 
 .customer-modal-content ul {
     list-style: none;
     padding: 0;
+    margin: 20px 0;
     max-height: 300px;
     overflow-y: auto;
-    border: 2px solid #ff5722;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    background: #fafafa;
+    animation: fadeIn 1s ease-in-out;
 }
 
 .customer-modal-content ul li {
     margin: 10px 0;
     padding: 15px;
-    border: 1px solid #000000;
-    border-radius: 5px;
-    background: linear-gradient(90deg, rgba(240, 240, 240, 0.8), #ffd700);
-    font-family: 'Comic Sans MS', cursive;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #f9f9f9, #ffffff);
+    font-family: 'Arial', sans-serif;
+    color: #333333;
+    font-size: 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
 }
 
 .customer-modal-content ul li:hover {
     transform: scale(1.05);
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.4);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(135deg, #ffffff, #f0f0f0);
+}
+
+.customer-modal-content ul li span {
+    font-weight: bold;
+    color: #7f8c8d;
 }
 
 .customer-modal-content button {
     margin-top: 20px;
-    padding: 12px 25px;
-    background: linear-gradient(to right, #ff5722, #e91e63);
+    padding: 12px 30px;
+    background: linear-gradient(to right, #2980b9, #3498db);
     color: white;
     border: none;
-    border-radius: 10px;
+    border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
+    font-family: 'Arial', sans-serif;
+    font-size: 1.1em;
     transition: background 0.3s ease, transform 0.2s ease;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    animation: buttonPop 0.8s ease-in-out;
 }
 
 .customer-modal-content button.pay {
-    background: linear-gradient(to right, #1330b3, #4285F4);
+    background: linear-gradient(to right, #27ae60, #2ecc71);
 }
 
 .customer-modal-content button:hover {
-    background: linear-gradient(to right, #e91e63, #ff5722);
-    transform: translateY(-3px);
-    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(to right, #3498db, #2980b9);
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+}
+
+.customer-modal-content button.pay:hover {
+    background: linear-gradient(to right, #2ecc71, #27ae60);
 }
 
 /* Keyframes for animations */
@@ -654,6 +701,15 @@ select:focus {
     }
 }
 
+@keyframes slideDown {
+    from {
+        transform: translateY(-50%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
 @keyframes rotateGlow {
     from {
         transform: rotate(0deg);
@@ -662,6 +718,25 @@ select:focus {
         transform: rotate(360deg);
     }
 }
+
+@keyframes buttonPop {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+@keyframes textPulse {
+    0%, 100% {
+        color: #34495e;
+    }
+    50% {
+        color: #2980b9;
+    }
+}
+
  
 
 /*phan quyen*/

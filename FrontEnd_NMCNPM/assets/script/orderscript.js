@@ -6,6 +6,21 @@ function toggleSidebar() {
       sidebar.style.width = "250px";
   }
 }
+document.addEventListener('DOMContentLoaded', () => {
+  const role = sessionStorage.getItem('role');
+  
+  if (role === 'MANAGER') {
+    const ManagerMode = document.querySelector('.managermode');
+    const loginButton = document.querySelector('.login-btn');
+
+    if (ManagerMode) {
+      ManagerMode.style.display = 'inline-block'; // Hiển thị MANAGER
+    }
+    if (loginButton) {
+      loginButton.style.display = 'none'; // Ẩn nút Login
+    }
+  }
+});
 
 // xu ly hàm main
 const orderList = [];
@@ -24,7 +39,7 @@ function start() {
 
   handleCreateForm();
   handleDeleteForm();
-  applyRoleBasedActions(localStorage.getItem("role"));
+  applyRoleBasedActions(sessionStorage.getItem("role"));
 }
 
 start();
@@ -47,7 +62,7 @@ function getMenuItem(filterCategory, callback) {
     });
 }
 function renderMenu(menuItems) {
-  if(localStorage.getItem("role") === "CUSTOMER") {
+  if(sessionStorage.getItem("role") === "CUSTOMER") {
     getMyOrder();
     var menuBlock = document.querySelector('.customer-menu-items');
 
@@ -66,7 +81,7 @@ function renderMenu(menuItems) {
     });
     menuBlock.innerHTML = htmls.join('');
     setUpAddtoOrderBtns();
-} else if(localStorage.getItem("role") === "MANAGER") {
+} else if(sessionStorage.getItem("role") === "MANAGER") {
     var menuBlock = document.querySelector('.manager-menu-items');
 
     var htmls = menuItems.map(function(menuItem) {
@@ -74,6 +89,7 @@ function renderMenu(menuItems) {
         <div class="manager-menu-item">
           <img src="${menuItem.image}" alt="${menuItem.name}" class="menu-item-image" />
           <div class="menu-item-info">
+            <p>Id sản phẩm: ${menuItem.id}</p>
             <p>${menuItem.name}</p>
             <p>Giá tiền: ${menuItem.price}</p>
           </div>
@@ -85,7 +101,7 @@ function renderMenu(menuItems) {
 
 
 function setupTabs() {
-  if(localStorage.getItem("role") === "CUSTOMER") {
+  if(sessionStorage.getItem("role") === "CUSTOMER") {
     const tabs = document.querySelectorAll('.customer-menu-tab');
 
     tabs.forEach(tab => {
@@ -100,7 +116,7 @@ function setupTabs() {
         });
       });
     });
-  } else if(localStorage.getItem("role") === "MANAGER") {
+  } else if(sessionStorage.getItem("role") === "MANAGER") {
     const tabs = document.querySelectorAll('.manager-menu-tab');
 
     tabs.forEach(tab => {
@@ -212,7 +228,7 @@ function getTables(callback) {
 }
 
 function renderTables(tables) {
-  if(localStorage.getItem("role") === "CUSTOMER") {
+  if(sessionStorage.getItem("role") === "CUSTOMER") {
     var tablesBlock = document.querySelector('.customer-table-grid');
 
     var htmls = tables.map((table) => {
@@ -221,7 +237,7 @@ function renderTables(tables) {
 
     tablesBlock.innerHTML = htmls.join('');
     fetchOccupiedTables(tables);
-  } else if(localStorage.getItem("role") === "MANAGER") {
+  } else if(sessionStorage.getItem("role") === "MANAGER") {
     var tablesBlock = document.querySelector('.manager-table-grid');
 
     var htmls = tables.map((table) => {
@@ -260,7 +276,7 @@ function fetchOccupiedTables(tables) {
   });
 }
 
-let myOrderId = localStorage.getItem('myOrderId') || 0; // Lấy từ LocalStorage nếu có
+let myOrderId = sessionStorage.getItem('myOrderId') || 0; // Lấy từ sessionStorage nếu có
 // Gửi order
 document.querySelector('.send-order').addEventListener('click', async function () {
   const selectedButton = document.querySelector('.customer-table-btn.selected');
@@ -337,7 +353,7 @@ document.querySelector('.send-order').addEventListener('click', async function (
 
     const orderResult = await orderResponse.json();
     const myOrderId = orderResult.id;
-    localStorage.setItem('myOrderId', myOrderId);
+    sessionStorage.setItem('myOrderId', myOrderId);
     alert('Đơn hàng đã gửi thành công!');
 
     console.log('Order response:', orderResult);
@@ -368,11 +384,10 @@ document.querySelector('.send-order').addEventListener('click', async function (
   }
 });
 
-async function getMyOrder() {
+async function getMyOrder(interval = 5000) {
   try {
-    const storedOrderId = localStorage.getItem('myOrderId'); 
+    const storedOrderId = sessionStorage.getItem('myOrderId'); 
     if (!storedOrderId) {
-      alert('Không tìm thấy đơn hàng nào.');
       return;
     }
 
@@ -384,6 +399,13 @@ async function getMyOrder() {
 
     const order = await response.json();
     renderOrder(order);
+    if (order.orderStatus !== 'CONFIRM') {
+      orderButton.classList.add('confirmed');
+      // Hiển thị thông báo
+      notification.classList.add('visible');
+    } else {
+      setTimeout(() => getMyOrder(interval), interval);
+    }
   } catch (error) {
     console.error(error);
   }
@@ -460,10 +482,50 @@ closeModalBtncm.addEventListener('click', () => {
   orderModalcm.classList.add('hidden');
 });
 
+// Hàm xử lý tìm kiếm theo thời gian thực
+function handleSearchRealTime() {
+  if(sessionStorage.getItem('role') === 'CUSTOMER') {
+    const searchInput = document.querySelector('#customer-search').value.toLowerCase(); // Lấy giá trị nhập vào và chuyển về chữ thường
+    getMenuItem('all', function(menuItems) { // Lấy toàn bộ danh sách món ăn
+      const filteredItems = menuItems.filter(item => 
+        item.name.toLowerCase().includes(searchInput) // Lọc các món ăn có tên chứa từ khóa
+      );
+    renderMenu(filteredItems); // Hiển thị kết quả lọc ngay lập tức
+    });
+  } else if(sessionStorage.getItem('role') === 'MANAGER') {
+    const searchInput = document.querySelector('#manager-search').value.toLowerCase(); 
+    getMenuItem('all', function(menuItems) { 
+      const filteredItems = menuItems.filter(item => 
+        item.name.toLowerCase().includes(searchInput) 
+      );
+    renderMenu(filteredItems);
+    });
+  } 
+}
+
+// Lắng nghe sự kiện trên ô tìm kiếm
+function setupRealTimeSearch() {
+  if(sessionStorage.getItem('role') === 'CUSTOMER') {
+    const searchInput = document.querySelector('#customer-search'); // Lấy ô nhập liệu
+
+    // Gắn sự kiện input để xử lý theo thời gian thực
+    searchInput.addEventListener('input', handleSearchRealTime);
+  } else if(sessionStorage.getItem('role') === 'MANAGER') {
+    const searchInput = document.querySelector('#customer-search'); 
+
+    searchInput.addEventListener('input', handleSearchRealTime);
+  }
+}
+
+// Gọi hàm setupRealTimeSearch trong phần khởi tạo
+document.addEventListener('DOMContentLoaded', () => {
+  setupRealTimeSearch();
+  setupTabs();
+});
+
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // thiet lap cac chuc nang manager
-
 // xu ly menu( them, xoa san pham)
 
 function createMenuItem(menuItem,callback) {
@@ -529,6 +591,31 @@ function handleDeleteForm() {
   };
 }
 
+// hàm upload ảnh
+function uploadImage(file, callback) {
+  const cloudinaryUrl = "https://api.cloudinary.com/v1_1/ddcxxry4q/image/upload";
+  const uploadPreset = "NMCNPM_Image"; // Tạo upload preset từ dashboard của Cloudinary.
+
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', uploadPreset);
+
+  fetch(cloudinaryUrl, {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.secure_url) {
+      callback(data.secure_url); // Gọi callback với URL ảnh sau khi upload thành công.
+    } else {
+      console.error('Failed to upload image:', data);
+    }
+  })
+  .catch(error => console.error('Error uploading image:', error));
+}
+
+
 function handleCreateForm() {
   var createButton = document.querySelector('#createBtn');
   if (!createButton) {
@@ -539,27 +626,35 @@ function handleCreateForm() {
     var name = document.getElementById('item-name').value;
     var price = parseInt(document.getElementById('item-price').value, 10);
     var description = document.getElementById('item-description').value;
-    var image = document.getElementById('menu-image').value;
+    var fileInput = document.getElementById('menu-image');
     var category = document.getElementById('category').value;
+    var file = fileInput.files[0];
 
 
     if (!name || !price || !category) {
       alert("Vui lòng điền đầy đủ thông tin!");
       return;
     }
+    // Upload ảnh trước
+    uploadImage(file,(imageUrl) => {
+      if (!imageUrl) {
+        alert("Lỗi khi upload ảnh!");
+        return;
+      }
 
-    var formData = {
-      name: name,
-      price : price,
-      description: description,
-      image: image,
-      category: category,
-      available: true
-    };
-    createMenuItem(formData, function() {
-      alert("Thêm sản phẩm thành công!");
-      getMenuItem(renderMenu);
-      window.location.reload();
+      var formData = {
+        name: name,
+        price : price,
+        description: description,
+        image: imageUrl,
+        category: category,
+        available: true
+      };
+      createMenuItem(formData, function() {
+        alert("Thêm sản phẩm thành công!");
+        getMenuItem(renderMenu);
+        window.location.reload();
+      });
     });
   }
 }
@@ -600,7 +695,7 @@ function fetchTableAndOrderData() {
           if (table.status === 'OCCUPIED') {
             button.classList.add('occupied');
             button.disabled = false; // Bàn có thể nhấn
-            button.style.backgroundColor = 'green'; // Màu xanh cho bàn có đơn hàng
+            button.style.backgroundColor = 'red'; // Màu xanh cho bàn có đơn hàng
           } else {
             button.classList.remove('occupied');
             button.disabled = true; // Bàn không nhấn được
@@ -706,7 +801,7 @@ function updateOrderStatus(orderId, newStatus) {
 }
 
 function deleteOrder(orderId) {
-  // const token = localStorage.getItem('token');
+  // const token = sessionStorage.getItem('token');
   // console.log(token);
   return fetch(`${orderApi}/${orderId}`, {
     method: 'DELETE'

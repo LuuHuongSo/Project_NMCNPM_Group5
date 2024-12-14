@@ -8,6 +8,21 @@ function toggleSidebar() {
   }
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+  const role = sessionStorage.getItem('role');
+  
+  if (role === 'MANAGER') {
+    const ManagerMode = document.querySelector('.managermode');
+    const loginButton = document.querySelector('.login-btn');
+
+    if (ManagerMode) {
+      ManagerMode.style.display = 'inline-block'; // Hiển thị MANAGER
+    }
+    if (loginButton) {
+      loginButton.style.display = 'none'; // Ẩn nút Login
+    }
+  }
+});
 
 // Chuyển đổi giữa chế độ khách hàng và chủ cửa hàng
 document.getElementById("customerBtn").onclick = function () {
@@ -16,8 +31,8 @@ document.getElementById("customerBtn").onclick = function () {
   document.querySelector(".confirm-btn").addEventListener("click", event => {
     alert('Login as Customer');
     window.location.href = 'index.html';
-    localStorage.setItem("role", "CUSTOMER");
-    localStorage.setItem("token", null);
+    sessionStorage.setItem("role", "CUSTOMER");
+    sessionStorage.setItem("token", null);
   });
   document.querySelector(".owner-login").style.display = "none";
 };
@@ -44,9 +59,9 @@ document.getElementById("ownerLoginForm")?.addEventListener("submit", async (e) 
     const result = await response.json();
 
     if (response.ok && result.message === "Login Successfully!") {
-      localStorage.setItem("token", result.jwt);
-      localStorage.setItem("email", result.email);
-      localStorage.setItem("role", "MANAGER");
+      sessionStorage.setItem("token", result.jwt);
+      sessionStorage.setItem("email", result.email);
+      sessionStorage.setItem("role", "MANAGER");
 
       alert("Login successful!");
       window.location.href = "index.html";
@@ -60,14 +75,5 @@ document.getElementById("ownerLoginForm")?.addEventListener("submit", async (e) 
 });
 
 
-document.addEventListener('DOMContentLoaded', () => {
-  const roleDisplay = document.getElementById('roleDisplay');
-  
-  // Lấy role từ localStorage
-  const role = localStorage.getItem('role');
-  
-  // Kiểm tra role có phải là "manager"
-  if (role === 'MANAGER') {
-    roleDisplay.style.display = 'inline-block'; // Hiển thị nút nếu là manager
-  }
-});
+
+
