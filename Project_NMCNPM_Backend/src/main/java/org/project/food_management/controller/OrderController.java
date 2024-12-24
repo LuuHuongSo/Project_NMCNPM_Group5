@@ -27,7 +27,7 @@ public class OrderController {
     @PostMapping("/order")
     public ResponseEntity<Order> createOrder(
             @RequestBody CreateOrderRequest req
-            ) throws Exception {
+    ) throws Exception {
         System.out.println("Received Order Request: " + new ObjectMapper().writeValueAsString(req));
         Order order = orderService.createOrder(req);
         return new ResponseEntity<>(order, HttpStatus.CREATED);

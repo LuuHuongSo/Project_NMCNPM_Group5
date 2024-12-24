@@ -22,7 +22,7 @@
         <a href="index.html">Home</a>
         <a href="menu.html">Menu</a>
         <a href="#">About</a>
-        <a href="#">Contact</a>
+        <a href="https://www.facebook.com/le.inh.chat.2024">Contact</a>
         <a href="order.html">Order</a>
     </div>
     <div class="page-content">
@@ -171,6 +171,139 @@
                 <button id="manager-close-modal">Đóng</button>
                 </div>
             </div>
+            <!-- Nút thêm bàn -->
+            <button id="add-table-btn" class="add-table-button">Add Table</button>
+
+            <!-- Form nhập số bàn và trạng thái -->
+            <div id="add-table-form" class="hidden-form">
+            <label for="table-number">Number:</label>
+            <input type="number" id="table-number" min="1" placeholder="Nhập số bàn" required />
+
+            <label>Trạng thái:</label>
+            <div class="table-status-options">
+                <label>
+                <input type="checkbox" name="table-status" value="AVAILABLE" /> AVAILABLE
+                </label>
+                <label>
+                <input type="checkbox" name="table-status" value="OCCUPIED" /> OCCUPIED
+                </label>
+                <label>
+                <input type="checkbox" name="table-status" value="RESERVED" /> RESERVED
+                </label>
+            </div>
+
+            <button id="submit-table-btn">Submit</button>
+            </div>
+            <!-- Change Price Container -->
+            <div id="change-container" class="change-price-container hidden">
+                <h3>Cập nhật giá sản phẩm</h3>
+                <div id="change-price-content">
+                <p><strong>ID sản phẩm:</strong> <span id="change-item-id"></span></p>
+                <p><strong>Tên sản phẩm:</strong> <span id="change-item-name"></span></p>
+                <input type="number" id="new-price-input" placeholder="Nhập giá mới" required>
+                <button id="submit-price-btn">Cập nhật</button>
+                <button id="cancel-price-btn">Hủy</button>
+                </div>
+            </div>
+            
+            <style>
+                /* Style cho vùng change price */
+                .change-price-container {
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background-color: #f9f9f9;
+                    padding: 25px 30px;
+                    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+                    border-radius: 12px;
+                    z-index: 1000;
+                    display: none;
+                    width: 350px;
+                    font-family: Arial, sans-serif;
+                    color: #333;
+                }
+
+                .change-price-container h3 {
+                    margin-top: 0;
+                    margin-bottom: 15px;
+                    font-size: 1.4rem;
+                    text-align: center;
+                    color: #444;
+                }
+
+                .change-price-container p {
+                    margin: 10px 0;
+                    font-size: 0.95rem;
+                }
+
+                #new-price-input {
+                    width: 100%;
+                    padding: 8px;
+                    margin: 15px 0;
+                    border: 1px solid #ccc;
+                    border-radius: 6px;
+                    font-size: 1rem;
+                    box-sizing: border-box;
+                    outline: none;
+                }
+
+                #new-price-input:focus {
+                    border-color: #007bff;
+                    box-shadow: 0 0 4px #007bff;
+                }
+
+                button {
+                    padding: 8px 12px;
+                    margin-right: 10px;
+                    font-size: 0.9rem;
+                    border: none;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    transition: all 0.2s ease-in-out;
+                }
+
+                #submit-price-btn {
+                    background-color: #28a745;
+                    color: white;
+                }
+
+                #submit-price-btn:hover {
+                    background-color: #218838;
+                }
+
+                #cancel-price-btn {
+                    background-color: #dc3545;
+                    color: white;
+                }
+
+                #cancel-price-btn:hover {
+                    background-color: #c82333;
+                }
+
+                /* Hiệu ứng khi container xuất hiện */
+                .change-price-container.appear {
+                    display: block;
+                    animation: fadeIn 0.3s ease-in-out;
+                }
+
+                .hidden {
+                    display: none;
+                }
+
+                /* Animation khi container hiện lên */
+                @keyframes fadeIn {
+                    from {
+                        opacity: 0;
+                        transform: translate(-50%, -60%);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translate(-50%, -50%);
+                    }
+                }
+
+            </style>
         </div>
     </div>
 

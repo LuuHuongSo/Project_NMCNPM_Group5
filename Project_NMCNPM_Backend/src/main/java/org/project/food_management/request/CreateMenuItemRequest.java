@@ -10,4 +10,5 @@ public class CreateMenuItemRequest {
     private Long price;
     private Category category;
     private boolean available;
+    private String image;
 }

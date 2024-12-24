@@ -1131,4 +1131,64 @@ select:focus {
 .order-item button:hover {
     background: #ff8570;
 }
-
+.change-price {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+/* Nút Add Table ở góc trái dưới */
+.add-table-button {
+    position: fixed;
+    bottom: 40px;
+    left: 40px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .add-table-button:hover {
+    background-color: #218838;
+  }
+  
+  /* Form nhập bàn */
+  .hidden-form {
+    position: fixed;
+    bottom: 70px;
+    left: 20px;
+    background-color: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    border-radius: 5px;
+  }
+  
+  .hidden-form input, .hidden-form select {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  .hidden-form button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  .table-status-options label {
+    display: flex;
+    align-items: center;
+    gap: 5px;

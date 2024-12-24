@@ -1,6 +1,7 @@
 package org.project.food_management.controller;
 
 import org.project.food_management.model.MenuItem;
+import org.project.food_management.request.ChangeMenuItemPriceRequest;
 import org.project.food_management.request.CreateMenuItemRequest;
 import org.project.food_management.service.MenuItemService;
 import org.springframework.http.HttpStatus;
@@ -22,14 +23,16 @@ public class MenuItemController {
     @PostMapping("/menu")
     public ResponseEntity<MenuItem> createMenuItem(
             @RequestBody CreateMenuItemRequest req
-            ) throws Exception {
+    ) throws Exception {
         MenuItem menuItem = menuItemService.createMenuItem(req);
         return new ResponseEntity<>(menuItem, HttpStatus.CREATED);
     }
 
-    @PutMapping("/api/admin/menu/{id}")
-    public ResponseEntity<MenuItem> changeMenuItemStatus(@PathVariable("id") Long id) throws Exception {
-        MenuItem menuItem = menuItemService.changeStatusItem(id);
+    @PutMapping("/menu")
+    public ResponseEntity<MenuItem> changeMenuItemPrice(
+            @RequestBody ChangeMenuItemPriceRequest req
+    ) throws Exception {
+        MenuItem menuItem = menuItemService.changePriceMenuItem(req);
         return new ResponseEntity<>(menuItem, HttpStatus.OK);
     }
 

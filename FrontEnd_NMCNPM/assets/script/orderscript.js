@@ -27,6 +27,7 @@ const orderList = [];
 const menuApi = 'http://localhost:8080/menu';
 const orderApi = 'http://localhost:8080/order';
 const tableApi = 'http://localhost:8080/tables';
+const menuApiMN = 'http://localhost:8080/api/admin/menu';
 const tableApiMN = 'http://localhost:8080/api/admin/tables';
 const orderApiMN = 'http://localhost:8080/api/admin/order';
 
@@ -92,10 +93,12 @@ function renderMenu(menuItems) {
             <p>Id sản phẩm: ${menuItem.id}</p>
             <p>${menuItem.name}</p>
             <p>Giá tiền: ${menuItem.price}</p>
+            <button class="change-price" data-id="${menuItem.id}" data-name="${menuItem.name}">Cập nhật giá</button>
           </div>
         </div>`;
     });
     menuBlock.innerHTML = htmls.join('');
+    setupChangePriceButton();
   }
 }
 
@@ -591,6 +594,61 @@ function handleDeleteForm() {
   };
 }
 
+function setupChangePriceButton() {
+  var changePriceButtons = document.querySelectorAll('.change-price');
+
+  changePriceButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const productId = button.dataset.id;
+      const productName = button.dataset.name;
+
+      document.getElementById('change-item-id').innerText = productId;
+      document.getElementById('change-item-name').innerText = productName;
+
+      const changeContainer = document.getElementById('change-container');
+      changeContainer.classList.add('appear');
+
+      // Xử lý nút submit
+      const submitButton = document.getElementById('submit-price-btn');
+      submitButton.onclick = () => {
+        const newPrice = parseInt(document.getElementById('new-price-input').value);
+
+        if (!newPrice || newPrice <= 0) {
+          alert("Vui lòng nhập giá mới hợp lệ!");
+          return;
+        }
+
+        var option = {
+          method: 'PUT',
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({id: productId, price: newPrice})
+        };
+        fetch(menuApi, option)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error('Failed to update price.');
+            }
+            return response.json();
+          })
+          .then(() => {
+            alert("Cập nhật giá thành công!");
+            window.location.reload(); // Reload trang để cập nhật UI
+          })
+          .catch(error => {
+            console.error('Lỗi khi cập nhật giá:', error);
+            alert("Đã xảy ra lỗi khi cập nhật giá.");
+          });
+      };
+      const cancelButton = document.getElementById('cancel-price-btn');
+      cancelButton.onclick = () => {
+        changeContainer.classList.remove('appear');
+      };
+    });
+  });
+}
+
 // hàm upload ảnh
 function uploadImage(file, callback) {
   const cloudinaryUrl = "https://api.cloudinary.com/v1_1/ddcxxry4q/image/upload";
@@ -635,7 +693,7 @@ function handleCreateForm() {
       alert("Vui lòng điền đầy đủ thông tin!");
       return;
     }
-    // Upload ảnh trước
+    //Upload ảnh trước
     uploadImage(file,(imageUrl) => {
       if (!imageUrl) {
         alert("Lỗi khi upload ảnh!");
@@ -709,6 +767,7 @@ function fetchTableAndOrderData() {
           });
 
           button.classList.add('selected');
+          button.style.backgroundColor = 'green';
           const selectedTable = tableNumber;
 
           const selectedOrder = orders.find((order) => order.table.number === selectedTable);
@@ -730,8 +789,8 @@ function displayOrderDetails(order, tables) {
   const orderHTML = `
     <h3>Đơn hàng của bàn ${order.table.number}</h3>
     <p><strong>Trạng thái:</strong> ${order.orderStatus}</p>
-    <p><strong>Tổng tiền:</strong> ${order.totalAmount} VND</p>
-    <p><strong>Thời gian đặt hàng:</strong> ${new Date(order.orderTime).toLocaleString()}</p>
+    <p><strong>Tổng tiền:</strong> ${order.total_amount} VND</p>
+    <p><strong>Thời gian đặt hàng:</strong> ${new Date(order.order_time).toLocaleString()}</p>
     <ul>
       ${order.orderItems.map(item => `
         <li>
@@ -983,3 +1042,62 @@ style.innerHTML = `
 `;
 
 document.head.appendChild(style);
+
+document.addEventListener('DOMContentLoaded', () => {
+  const addTableBtn = document.getElementById('add-table-btn');
+  const form = document.getElementById('add-table-form');
+  const submitTableBtn = document.getElementById('submit-table-btn');
+  const statusCheckboxes = document.querySelectorAll('input[name="table-status"]');
+
+  // Hiển thị/ẩn form khi nhấn nút Add Table
+  addTableBtn.addEventListener('click', () => {
+    form.style.display = form.style.display === 'flex' ? 'none' : 'flex';
+  });
+
+  // Đảm bảo chỉ một checkbox được chọn
+  statusCheckboxes.forEach((checkbox) => {
+    checkbox.addEventListener('change', () => {
+      statusCheckboxes.forEach((cb) => {
+        if (cb !== checkbox) cb.checked = false;
+      });
+    });
+  });
+
+  // Gửi dữ liệu bàn khi nhấn Submit
+  submitTableBtn.addEventListener('click', () => {
+    const tableNumber = document.getElementById('table-number').value;
+    let tableStatus = '';
+
+    statusCheckboxes.forEach((checkbox) => {
+      if (checkbox.checked) tableStatus = checkbox.value;
+    });
+
+    if (tableNumber && tableStatus) {
+      const newTable = {
+        number: tableNumber,
+        status: tableStatus
+      };
+      var option = {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newTable)
+      }
+
+      // fetch(tableApi, option)
+      //   .then((response) => {
+      //     response.json();
+      //   })
+        
+      console.log('New Table:', newTable);
+
+      // Sau khi gửi thành công, ẩn form và reset
+      form.style.display = 'none';
+      document.getElementById('table-number').value = '';
+      statusCheckboxes.forEach((cb) => (cb.checked = false));
+    } else {
+      alert('Vui lòng nhập số bàn và chọn trạng thái.');
+    }
+  });
+});

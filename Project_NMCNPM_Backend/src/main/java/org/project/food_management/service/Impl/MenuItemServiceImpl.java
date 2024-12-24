@@ -2,6 +2,7 @@ package org.project.food_management.service.Impl;
 
 import org.project.food_management.model.MenuItem;
 import org.project.food_management.repository.MenuItemRepository;
+import org.project.food_management.request.ChangeMenuItemPriceRequest;
 import org.project.food_management.request.CreateMenuItemRequest;
 import org.project.food_management.service.MenuItemService;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,7 @@ public class MenuItemServiceImpl implements MenuItemService {
         menuItem.setCategory(req.getCategory());
         menuItem.setPrice(req.getPrice());
         menuItem.setAvailable(req.isAvailable());
+        menuItem.setImage(req.getImage());
         return menuItemRepository.save(menuItem);
     }
 
@@ -43,6 +45,12 @@ public class MenuItemServiceImpl implements MenuItemService {
     public MenuItem changeStatusItem(Long id) throws Exception {
         MenuItem menuItem = findMenuItemById(id);
         menuItem.setAvailable(!menuItem.isAvailable());
+        return menuItemRepository.save(menuItem);
+    }
+    @Override
+    public MenuItem changePriceMenuItem(ChangeMenuItemPriceRequest req) throws Exception {
+        MenuItem menuItem = findMenuItemById(req.getId());
+        menuItem.setPrice(req.getPrice());
         return menuItemRepository.save(menuItem);
     }
 
